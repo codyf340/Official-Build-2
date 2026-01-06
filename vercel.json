@@ -1,11 +1,5 @@
 
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
   "functions": {
     "api/weather.ts": {
       "maxDuration": 30
