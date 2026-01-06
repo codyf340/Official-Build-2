@@ -7,6 +7,12 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ) {
+  // CRITICAL: Check if the API key is configured on the server
+  if (!process.env.GEMINI_API_KEY) {
+    console.error("CRITICAL ERROR: GEMINI_API_KEY is not configured on the server.");
+    return res.status(500).json({ error: 'API Key is not configured on the server. Please set the GEMINI_API_KEY environment variable in your Vercel project settings.' });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
