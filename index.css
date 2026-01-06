@@ -1,4 +1,53 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #ef4444;
+  }
+  
+  html {
+    @apply bg-slate-950;
+  }
+
+  body {
+    @apply bg-slate-950 text-slate-50 min-h-screen font-['Plus_Jakarta_Sans',sans-serif];
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(239, 68, 68, 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(15, 23, 42, 1) 0px, transparent 50%);
+    background-attachment: fixed;
+    margin: 0;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-2xl overflow-hidden;
+  }
+  
+  .glass-card {
+    @apply bg-white/[0.03] backdrop-blur-md border border-white/5 transition-all duration-300;
+  }
+
+  .glass-card:hover {
+    @apply border-white/15 bg-white/[0.05] -translate-y-0.5 shadow-lg;
+  }
+}
+
+@keyframes marquee-fast {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee-fast {
+  animation: marquee-fast 40s linear infinite;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #020617; }
+::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
