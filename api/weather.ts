@@ -118,7 +118,11 @@ export default async function handler(
 
     res.status(200).json({ data, searchSources, aiStatus: 'active' });
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
-    res.status(500).json({ error: 'Failed to fetch data from AI service.' });
+    console.error("Gemini API Error:", error.message);
+    console.error("Full Error Object:", JSON.stringify(error, null, 2));
+    res.status(500).json({
+      error: 'Failed to fetch data from AI service.',
+      details: error.message || 'An unknown server error occurred.'
+    });
   }
 }

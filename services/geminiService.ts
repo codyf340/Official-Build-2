@@ -106,23 +106,25 @@ const fetchSearchGroundedData = async (city: CityKey, currentTemp: number, condi
     });
 
     if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({})); // Gracefully handle non-json error responses
+      const errorBody = await response.json().catch(() => ({ error: "Failed to parse error response from server." }));
+      console.error("API Error Response:", errorBody);
       if (isRateLimitError(errorBody) || response.status === 429) {
           rateLimitResetTime = Date.now() + RATE_LIMIT_COOLDOWN;
           return { data: getDefaultAIData("Service limit triggered."), searchSources: [], aiStatus: 'rate_limited' as const };
       }
-      throw new Error(`API request failed with status ${response.status}`);
+      throw new Error(errorBody.details || `API request failed with status ${response.status}`);
     }
 
     const { data, searchSources, aiStatus } = await response.json();
     return { data, searchSources, aiStatus };
 
   } catch (error: any) {
+    console.error("Fetch Search Grounded Data Error:", error.message);
     if (isRateLimitError(error)) {
         rateLimitResetTime = Date.now() + RATE_LIMIT_COOLDOWN;
         return { data: getDefaultAIData("Service limit triggered."), searchSources: [], aiStatus: 'rate_limited' as const };
     }
-    return { data: getDefaultAIData("Intelligence service standby."), searchSources: [], aiStatus: 'failed' as const };
+    return { data: getDefaultAIData(error.message || "Intelligence service standby."), searchSources: [], aiStatus: 'failed' as const };
   }
 };
 
